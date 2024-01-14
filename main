@@ -1,0 +1,84 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+
+using namespace std;
+
+int main() {
+    srand(time(0)); // random number generator
+
+    int randomNumber, guess, attempts, score = 0;
+    int difficulty;
+    char hintChoice;
+    string theme;
+
+    // a theme
+    cout << "Choose a theme (fantasy, scifi, or default): ";
+    cin >> theme;
+
+    if (theme == "fantasy") {
+        cout << "Welcome to the Realm of Guessing!\n";
+        cout << "The oracle has conjured a mystical number...\n";
+    } else if (theme == "scifi") {
+        cout << "Greetings, Earthling! Engage in the Galactic Guessing Game!\n";
+        cout << "The alien intelligence has chosen a secret number...\n";
+    } else {
+        cout << "Welcome to the Number Guessing Game!\n";
+        cout << "I'm thinking of a number...\n";
+    }
+
+    // Choose difficulty level
+    cout << "Choose difficulty level (1 - Easy, 2 - Medium, 3 - Hard): ";
+    cin >> difficulty;
+
+    if (difficulty == 1) {
+        randomNumber = rand() % 50 + 1; // Easy range
+        attempts = 15;
+    } else if (difficulty == 2) {
+        randomNumber = rand() % 100 + 1; // Medium range
+        attempts = 10;
+    } else {
+        randomNumber = rand() % 200 + 1; // Hard range
+        attempts = 5;
+    }
+
+    while (attempts > 0) {
+        cout << "\nYou have " << attempts << " attempts left. Guess a number: ";
+        cin >> guess;
+
+        if (guess == randomNumber) {
+            score = 100 - attempts; // Calculate score
+            cout << "\nCongratulations! You guessed the number and scored " << score << " points!\n";
+            break;
+        } else {
+            cout << "Do you want a hint? (y/n): ";
+            cin >> hintChoice;
+
+            if (hintChoice == 'y') {
+                if (guess < randomNumber - 25) {
+                    cout << "Hint: The number is significantly higher.\n";
+                } else if (guess > randomNumber + 25) {
+                    cout << "Hint: The number is significantly lower.\n";
+                } else {
+                    cout << "Hint: You're close! Keep trying.\n";
+                }
+            }
+
+            if (guess < randomNumber) {
+                cout << "Too low. Try again.\n";
+            } else {
+                cout << "Too high. Try again.\n";
+            }
+            attempts--;
+        }
+    }
+
+    if (attempts == 0) {
+        cout << "\nYou ran out of attempts. The number was " << randomNumber << ".\n";
+    }
+
+    cout << "\nYour total score: " << score << endl;
+
+    return 0;
+}
